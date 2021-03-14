@@ -1,27 +1,35 @@
 {
   /**
-   * Let's make a calculator 🧮
+   * Let's make a game 🕹
    */
-  type Commend = "add" | "substract" | "multiply" | "divide" | "remainder";
-  function calculate(commend: Commend, n1: number, n2: number): number {
-    switch (commend) {
-      case "add":
-        return n1 + n2;
-      case "substract":
-        return n1 - n2;
-      case "multiply":
-        return n1 * n2;
-      case "divide":
-        return n1 / n2;
-      case "remainder":
-        return n1 * n2;
+  type Direction = "up" | "down" | "left" | "right";
+  function move(direction: Direction): void {
+    switch (direction) {
+      case "up":
+        position.y++;
+        return;
+      case "down":
+        position.y--;
+        return;
+      case "left":
+        position.x--;
+        return;
+      case "right":
+        position.x++;
+        return;
       default:
-        throw new Error("너 틀렸어");
+        throw new Error("wrong direction");
     }
   }
-  console.log(calculate("add", 1, 3)); // 4
-  console.log(calculate("substract", 3, 1)); // 2
-  console.log(calculate("multiply", 4, 2)); // 8
-  console.log(calculate("divide", 4, 2)); // 2
-  console.log(calculate("remainder", 5, 2)); // 1
+
+  const position = { x: 0, y: 0 };
+  console.log(position); // { x: 0, y: 0}
+  move("up");
+  console.log(position); // { x: 0, y: 1}
+  move("down");
+  console.log(position); // { x: 0, y: 0}
+  move("left");
+  console.log(position); // { x: -1, y: 0}
+  move("right");
+  console.log(position); // { x: 0, y: 0}
 }
