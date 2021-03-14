@@ -1,38 +1,42 @@
 {
-  /**
-   * Print Loading State
-   */
-  type LoadingState = {
-    state: "loading";
+  type CoffeeCup = {
+    shots: number;
+    hasMilk: boolean;
   };
 
-  type SuccessState = {
-    state: "success";
-    response: {
-      body: string;
-    };
-  };
+  class CoffeeMachine {
+    private static BEANS_GRAMM_PER_SHOT: number = 7;
+    private coffeeBeans: number = 0;
 
-  type FailState = {
-    state: "fail";
-    reason: string;
-  };
+    private constructor(coffeeBeans: number) {
+      this.fillCoffeeBeans(coffeeBeans);
+    }
 
-  type ResourceLoadState = LoadingState | SuccessState | FailState;
-  function printLoginState(res: ResourceLoadState): void {
-    switch (res.state) {
-      case "loading":
-        return console.log("👀 loading...");
-      case "success":
-        return console.log(`😃 ${res.response.body}`);
-      case "fail":
-        return console.log(`😱 ${res.reason}`);
-      default:
-        throw new Error("what the hell");
+    static makeMachine(coffeeBeans: number): CoffeeMachine {
+      return new CoffeeMachine(coffeeBeans);
+    }
+    static getBeansGramPerShot(): number {
+      return CoffeeMachine.BEANS_GRAMM_PER_SHOT;
+    }
+
+    fillCoffeeBeans(coffeeBeans: number): void {
+      if (coffeeBeans < 0) throw new Error("beans should be");
+      this.coffeeBeans += coffeeBeans;
+    }
+
+    makeCoffee(shots: number): CoffeeCup {
+      if (this.coffeeBeans < shots * CoffeeMachine.BEANS_GRAMM_PER_SHOT)
+        throw new Error("not enough coffee beans!");
+      this.coffeeBeans -= shots * CoffeeMachine.BEANS_GRAMM_PER_SHOT;
+      return { shots, hasMilk: false };
     }
   }
 
-  printLoginState({ state: "loading" }); // 👀 loading...
-  printLoginState({ state: "success", response: { body: "loaded" } }); // 😃 loaded
-  printLoginState({ state: "fail", reason: "no network" }); // 😱 no network
+  const coffeeMachine = CoffeeMachine.makeMachine(
+    3 * CoffeeMachine.getBeansGramPerShot()
+  );
+  console.log(CoffeeMachine);
+  console.log(coffeeMachine);
+  const coffee = coffeeMachine.makeCoffee(2);
+  console.log(coffee);
 }
